@@ -1,0 +1,25 @@
+{
+  "name": "alifenotlived",
+  "version": "0.0.0",
+  "authors": [
+    "eatpie75 <eatpie75@gmail.com>"
+  ],
+  "moduleType": [
+    "node"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.5",
+    "jquery": "~2.1.4",
+    "hogan": "~3.0.2",
+    "less": "~2.5.1",
+    "markdown-it": "~4.3.0"
+  }
+}
