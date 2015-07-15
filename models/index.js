@@ -1,5 +1,7 @@
+var Promise = require('bluebird');
 var Sequelize = require('sequelize');
 var slug = require('slug');
+var swig_date = require('swig/lib/filters').date;
 // var sequelize = new Sequelize('database', 'username', 'password', {
 //   host: 'localhost',
 //   dialect: 'mysql'|'mariadb'|'sqlite'|'postgres'|'mssql',
@@ -36,6 +38,23 @@ var Entry = sequelize.define('Entry', {
     },
     'get_metadata': function() {
       return JSON.parse(this.metadata);
+    },
+    'analyze_information': function() {
+      var metadata = this.get_metadata();
+      var _this = this;
+      if (metadata.information) {
+        var new_information = [];
+        metadata.information.forEach(function(information) {
+          information.selections.forEach(function(selection) {
+            var data = {
+              'content': _this.content.slice(selection[0], selection[1]),
+              'date': swig_date(_this.date, 'l F jS, Y')
+            };
+            new_information.push({'name':_this.date, 'data':JSON.stringify(data), 'ThingId':information.id});
+          });
+        });
+        Information.bulkCreate(new_information);
+      }
     }
   }
 });
@@ -47,7 +66,7 @@ var Thing = sequelize.define('Thing', {
   'content': Sequelize.TEXT
 }, {
   'hooks': {
-    'beforeCreate': function(instance, options) {
+    'beforeCreate': function(instance) {
       if (instance.slug === null) {
         instance.slug = slug(instance.name);
       }
@@ -63,7 +82,13 @@ var Thing = sequelize.define('Thing', {
 var Information = sequelize.define('Information', {
   'name': Sequelize.STRING,
   'kind': Sequelize.INTEGER,
-  'data': Sequelize.TEXT,
+  'data': {type:Sequelize.TEXT, defaultValue:'{}'},
+}, {
+  'instanceMethods': {
+    'get_data': function() {
+      return JSON.parse(this.data);
+    }
+  }
 });
 Information.belongsTo(Thing);
 

@@ -6,17 +6,6 @@ var router = express.Router();
 var db = require('../models');
 
 router.get('/', function(req, res, next) {
-  // var entry = {
-  //   'date':Date.now(),
-  //   'content':'asdasd',
-  //   'get_url': function() {
-  //     return '/1';
-  //   },
-  //   'get_review_url': function() {
-  //     return '/1/review';
-  //   }
-  // };
-
   db.models.Entry.findAll({'limit':25}).then(function(entries) {
     res.render('index', _.extend(req.app.locals.render_data, {entries:entries}));
   });
@@ -63,7 +52,9 @@ router.get('/thing/:name', function(req, res, next) {
 });
 router.get('/thing/:id/:slug', function(req, res, next) {
   db.models.Thing.findById(req.params.id).then(function(thing) {
-    res.render('thing', _.extend(req.app.locals.render_data, {thing:thing}));
+    db.models.Information.findAll({'where':{'ThingId':thing.id}}).then(function(information) {
+      res.render('thing', _.extend(req.app.locals.render_data, {'thing':thing, 'information':information.map(function(d){return d.get_data();})}));      
+    });
   });
 });
 
