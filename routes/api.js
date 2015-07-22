@@ -1,6 +1,4 @@
-var _ = require('underscore');
 var express = require('express');
-var Promise = require('bluebird');
 var router = express.Router();
 
 var db = require('../models');

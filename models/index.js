@@ -1,23 +1,8 @@
-var Promise = require('bluebird');
 var Sequelize = require('sequelize');
 var slug = require('slug');
 var swig_date = require('swig/lib/filters').date;
-// var sequelize = new Sequelize('database', 'username', 'password', {
-//   host: 'localhost',
-//   dialect: 'mysql'|'mariadb'|'sqlite'|'postgres'|'mssql',
 
-//   pool: {
-//     max: 5,
-//     min: 0,
-//     idle: 10000
-//   },
-
-//   // SQLite only
-//   storage: 'path/to/database.sqlite'
-// });
-
-// Or you can simply use a connection uri
-var sequelize = new Sequelize('sqlite://db.sqlite3');
+var sequelize = new Sequelize(process.env.DATABASE_URL || 'sqlite://db.sqlite3');
 
 var Entry = sequelize.define('Entry', {
   'date': Sequelize.DATEONLY,
