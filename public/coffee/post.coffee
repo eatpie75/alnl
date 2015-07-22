@@ -11,7 +11,7 @@ class Post
 			@draft_key='draft'
 		
 		if $('#post').val()=='' and window.localStorage.getItem(@draft_key)
-			window.post.post.val(window.localStorage.getItem(@draft_key))
+			@post.val(window.localStorage.getItem(@draft_key))
 		else
 			window.localStorage.setItem(@draft_key, '')
 

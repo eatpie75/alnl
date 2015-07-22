@@ -14,7 +14,7 @@
         this.draft_key = 'draft';
       }
       if ($('#post').val() === '' && window.localStorage.getItem(this.draft_key)) {
-        window.post.post.val(window.localStorage.getItem(this.draft_key));
+        this.post.val(window.localStorage.getItem(this.draft_key));
       } else {
         window.localStorage.setItem(this.draft_key, '');
       }
