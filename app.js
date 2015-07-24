@@ -15,7 +15,7 @@ var STATIC_PATH;
 if (app.get('env') === 'development') {
   STATIC_PATH = path.join(__dirname, 'public');
 } else {
-  STATIC_PATH = path.join(__dirname, 'dist');
+  STATIC_PATH = path.join(__dirname, 'public', 'dist');
 }
 
 app.engine('swig', swig.renderFile);
@@ -31,7 +31,7 @@ app.use(express.static(process.env.STATIC_PATH || STATIC_PATH));
 
 app.use(function(req, res, next) {
   app.locals.render_data = {
-    'debug': (app.get('env') === 'development'),
+    'debug': false, //(app.get('env') === 'development'),
     'title': 'ALNL'
   };
   next();

@@ -16,18 +16,21 @@
     <link href="/less/main.less" rel="stylesheet/less" type="text/css">
     <script src="/js/less.min.js"></script>
     {%- else %}
-    <link href="/css/bootstrap.css" rel="stylesheet" type="text/css">
-    <link href="/css/main.css" rel="stylesheet" type="text/css">
+    <link href="/app.css" rel="stylesheet" type="text/css">
     {%- endif %}
     {%- block extra_css %}{% endblock %}
     {%- endblock %}
     {%- block scripts %}
     {%- block pre_scripts %}{% endblock %}
+    {%- if debug %}
     <script src="/js/jquery.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/markdown-it.min.js"></script>
-    <script src="/js/markdown-it-thingtag.js"></script>
-    <script src="/js/core.js"></script>
+    {%- else %}
+    <script src="/libs.js"></script>
+    {%- endif %}
+    <script src="/markdown-it-thingtag.js"></script>
+    <script src="/core.js"></script>
     <script type="text/javascript">
       var AJAX_BASE="{{AJAX_BASE}}";
       var md=markdownit('commonmark', {'typographer':true});

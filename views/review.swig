@@ -1,8 +1,7 @@
 {% extends 'base.swig' %}
 
 {% block post_scripts %}
-    <script src="/js/review.js"></script>
-    <script src="/js/hogan.min.js"></script>
+    <script src="/review.js"></script>
     <script type="text/javascript">
       // var CSRF_TOKEN="{{csrf_token}}";
       var ENTRY_ID={{entry.id}};

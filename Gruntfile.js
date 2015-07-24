@@ -19,7 +19,7 @@ module.exports = function (grunt) {
   // Configurable paths
   var config = {
     js: 'public/js',
-    lib: 'public/lib',
+    lib: 'lib',
     less: 'public/less',
     dist: 'public/dist'
   };
@@ -33,13 +33,36 @@ module.exports = function (grunt) {
     clean: {
       css: ['<%= config.dist %>/*.css'],
       js: ['<%= config.dist %>/*.js'],
+      fonts: ['<%= config.dist %>/fonts'],
       // less: ['<%= config.dist %>/*.less'],
     },
 
+    copy: {
+      fonts: {
+        expand: true,
+        cwd: '<%= config.lib %>/bootstrap/dist/fonts/',
+        src: '*',
+        dest: '<%= config.dist %>/fonts/',
+        flatten: true
+      }
+    },
+
     concat: {
-      lib: {
-        src: ['<%= config.lib %>/jquery/dist/jquery.min.js', '<%= config.lib %>/hogan/web/builds/3.0.2/hogan-3.0.2.min.js'],
+      js: {
+        src: [
+          '<%= config.lib %>/jquery/dist/jquery.min.js',
+          '<%= config.lib %>/hogan/web/builds/3.0.2/hogan-3.0.2.min.js',
+          '<%= config.lib %>/markdown-it/dist/markdown-it.min.js',
+          '<%= config.lib %>/bootstrap/dist/js/bootstrap.min.js',
+        ],
         dest: '<%= config.dist %>/libs.js'
+      },
+      less: {
+        src: [
+          '<%= config.dist %>/app.css',
+          '<%= config.lib %>/bootstrap/dist/css/bootstrap.min.css'
+        ],
+        dest: '<%= config.dist %>/app.css'
       }
     },
 
@@ -51,7 +74,7 @@ module.exports = function (grunt) {
       },
       client: {
         files: ['public/**/*.js', '!<%= config.lib %>/**/*.js', '!<%= config.dist %>/*.js'],
-        tasks: ['jshint:client', 'uglify:dev']
+        tasks: [/*'jshint:client',*/ 'uglify:dev']
       },
       less: {
         files: ['<%= config.less %>/*.less'],
@@ -83,18 +106,24 @@ module.exports = function (grunt) {
           compress: false,
           mangle:false
         },
-        files: {
-          '<%= config.dist %>/app.js': ['<%= config.js %>/app.js']
-        }
+        files: [{
+            expand: true,
+            cwd: '<%= config.js %>',
+            src: '**/*.js',
+            dest: '<%= config.dist %>'
+        }]
       },
       prod: {
         options: {
           compress: true,
           mangle:true
         },
-        files: {
-          '<%= config.dist %>/app.js': ['<%= config.js %>/app.js']
-        }
+        files: [{
+            expand: true,
+            cwd: '<%= config.js %>',
+            src: '**/*.js',
+            dest: '<%= config.dist %>'
+        }]
       }
     },
 
@@ -133,10 +162,11 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean',
-    'jshint',
+    // 'jshint',
     'mochaTest',
     'less',
-    'concat:lib',
+    'concat',
+    'copy',
     'uglify:prod'
   ]);
 

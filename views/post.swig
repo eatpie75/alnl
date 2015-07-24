@@ -1,7 +1,7 @@
 {% extends 'base.swig' %}
 
 {% block post_scripts %}
-    <script src="/js/post.js"></script>
+    <script src="/post.js"></script>
     <script type="text/javascript">
       {% if entry %}var ENTRY_ID={{entry.id}};{% endif %}
     </script>
