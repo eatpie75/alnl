@@ -144,6 +144,7 @@ class ThingManager
 	remove_selection:(thing, index)->
 		@things[thing].selections[index].element.remove()
 		@things[thing].selections.splice(index, 1)
+		window.getSelection().removeAllRanges()
 	activate_selector:(id)->
 		$('#review-content').on('mouseup', ()=>
 			$('#review-content').off('mouseup')

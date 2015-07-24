@@ -20,7 +20,7 @@ class Post
 			if @post.val()!=window.localStorage.getItem(@draft_key)
 				window.localStorage.setItem(@draft_key, @post.val())
 		)
-		$('#submit').on('click', ()->
+		$('#submit').on('click', ()=>
 			if window.ENTRY_ID
 				url="/api/entry/#{window.ENTRY_ID}"
 			else
@@ -31,7 +31,7 @@ class Post
 				# headers:{'X-CSRFToken':window.CSRF_TOKEN}
 				data:{'content':$('#post').val()}
 				dataType:'json'
-				success:(data)->
+				success:(data)=>
 					window.localStorage.removeItem(@draft_key)
 					window.location=data['redirect']
 			})

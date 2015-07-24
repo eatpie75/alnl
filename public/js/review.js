@@ -191,7 +191,8 @@
 
     ThingManager.prototype.remove_selection = function(thing, index) {
       this.things[thing].selections[index].element.remove();
-      return this.things[thing].selections.splice(index, 1);
+      this.things[thing].selections.splice(index, 1);
+      return window.getSelection().removeAllRanges();
     };
 
     ThingManager.prototype.activate_selector = function(id) {

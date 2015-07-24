@@ -26,26 +26,28 @@
           }
         };
       })(this));
-      $('#submit').on('click', function() {
-        var url;
-        if (window.ENTRY_ID) {
-          url = "/api/entry/" + window.ENTRY_ID;
-        } else {
-          url = "/api/entry";
-        }
-        return $.ajax({
-          url: url,
-          method: 'POST',
-          data: {
-            'content': $('#post').val()
-          },
-          dataType: 'json',
-          success: function(data) {
-            window.localStorage.removeItem(this.draft_key);
-            return window.location = data['redirect'];
+      $('#submit').on('click', (function(_this) {
+        return function() {
+          var url;
+          if (window.ENTRY_ID) {
+            url = "/api/entry/" + window.ENTRY_ID;
+          } else {
+            url = "/api/entry";
           }
-        });
-      });
+          return $.ajax({
+            url: url,
+            method: 'POST',
+            data: {
+              'content': $('#post').val()
+            },
+            dataType: 'json',
+            success: function(data) {
+              window.localStorage.removeItem(_this.draft_key);
+              return window.location = data['redirect'];
+            }
+          });
+        };
+      })(this));
       this.post.change();
     }
 
