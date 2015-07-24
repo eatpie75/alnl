@@ -20,6 +20,6 @@
     "jquery": "~2.1.4",
     "hogan": "~3.0.2",
     "less": "~2.5.1",
-    "markdown-it": "~4.3.0"
+    "markdown-it": "~4.4.0"
   }
 }
