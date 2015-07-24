@@ -77,6 +77,18 @@ var Information = sequelize.define('Information', {
 });
 Information.belongsTo(Thing);
 
+var Photo = sequelize.define('Photo', {
+  'name': Sequelize.STRING,
+  'gid': Sequelize.STRING(512)
+}, {
+  'instanceMethods': {
+    'get_url': function() {
+      return 'https://storage.googleapis.com/alnl/' + this.gid;
+    }
+  }
+});
+Photo.belongsTo(Entry);
+
 sequelize.sync();
 
 module.exports = sequelize;
