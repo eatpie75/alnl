@@ -1,3 +1,4 @@
+var fuzzy_selection_update = require('../utils/fuzzy_selection_update');
 var express = require('express');
 var router = express.Router();
 
@@ -5,7 +6,15 @@ var db = require('../models');
 
 router.post('/entry/:entry', function(req, res, next) {
   db.models.Entry.findById(req.params.entry).then(function(entry) {
-    entry.content = req.body.content;
+    var new_content = req.body.content;
+
+    var metadata = entry.get_metadata();
+    if ('information' in metadata) {
+      metadata.information = fuzzy_selection_update(entry.content, new_content, metadata.information);
+      entry.metadata = JSON.stringify(metadata);
+    }
+
+    entry.content = new_content;
     return entry.save();
   }).then(function(entry) {
     res.json({'redirect':entry.get_review_url()});
