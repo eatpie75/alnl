@@ -16,7 +16,7 @@
     <link href="/less/main.less" rel="stylesheet/less" type="text/css">
     <script src="/js/less.min.js"></script>
     {%- else %}
-    <link href="/app.css" rel="stylesheet" type="text/css">
+    <link href="/main.css" rel="stylesheet" type="text/css">
     {%- endif %}
     {%- block extra_css %}{% endblock %}
     {%- endblock %}

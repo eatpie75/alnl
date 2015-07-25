@@ -59,10 +59,10 @@ module.exports = function (grunt) {
       },
       less: {
         src: [
-          '<%= config.dist %>/app.css',
-          '<%= config.lib %>/bootstrap/dist/css/bootstrap.min.css'
+          '<%= config.lib %>/bootstrap/dist/css/bootstrap.min.css',
+          '<%= config.dist %>/app.css'
         ],
-        dest: '<%= config.dist %>/app.css'
+        dest: '<%= config.dist %>/main.css'
       }
     },
 
@@ -77,8 +77,8 @@ module.exports = function (grunt) {
         tasks: [/*'jshint:client',*/ 'uglify:dev']
       },
       less: {
-        files: ['<%= config.less %>/*.less'],
-        tasks: ['less']
+        files: ['<%= config.less %>/app/*.less'],
+        tasks: ['less', 'concat:less']
       }
     },
 
@@ -136,7 +136,9 @@ module.exports = function (grunt) {
     less: {
       dev: {
         files: {
-          '<%= config.dist %>/app.css': ['<%= config.less %>/*.less']
+          '<%= config.dist %>/app.css': [
+            '<%= config.less %>/app/*.less'
+          ]
         }
       }
     },
