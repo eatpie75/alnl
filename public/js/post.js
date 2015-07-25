@@ -8,6 +8,15 @@
       this.previous_value = '';
       this.draft_key = '';
       this.post = $('#post');
+      this.photo_list = $('.photo-list');
+      this.templates = {
+        'photo-list-item': Hogan.compile("<div class='photo-list-item' data-id='{{id}}'> <a href='/image/{{id}}'><img src='/image/{{id}}'></a> <span class='glyphicon glyphicon-minus text-danger'></span> </div>")
+      };
+      this.init();
+      this.load_photos();
+    }
+
+    Post.prototype.init = function() {
       if (window.ENTRY_ID) {
         this.draft_key = "draft/" + window.ENTRY_ID;
       } else {
@@ -36,7 +45,7 @@
           }
           return $.ajax({
             url: url,
-            method: 'POST',
+            method: window.ENTRY_ID ? 'PUT' : 'POST',
             data: {
               'content': $('#post').val()
             },
@@ -48,8 +57,49 @@
           });
         };
       })(this));
+      this.photo_list.on('click', '.glyphicon-minus', (function(_this) {
+        return function(e) {
+          return _this.delete_photo($(e.target).parent().data('id'));
+        };
+      })(this));
       this.post.change();
-    }
+    };
+
+    Post.prototype.load_photos = function() {
+      if (!window.ENTRY_ID) {
+        return;
+      }
+      $.ajax({
+        url: "/api/entry/" + window.ENTRY_ID + "/photos",
+        method: 'GET',
+        dataType: 'json',
+        success: (function(_this) {
+          return function(photos) {
+            var i, len, photo, results;
+            _this.photo_list.empty();
+            results = [];
+            for (i = 0, len = photos.length; i < len; i++) {
+              photo = photos[i];
+              results.push(_this.photo_list.append(_this.templates['photo-list-item'].render(photo)));
+            }
+            return results;
+          };
+        })(this)
+      });
+    };
+
+    Post.prototype.delete_photo = function(id) {
+      return $.ajax({
+        url: "/api/entry/" + window.ENTRY_ID + "/photos/" + id,
+        method: "DELETE",
+        dataType: "json",
+        success: (function(_this) {
+          return function(data) {
+            return _this.photo_list.children("[data-id=" + id + "]").first().remove();
+          };
+        })(this)
+      });
+    };
 
     return Post;
 

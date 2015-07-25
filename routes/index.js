@@ -11,15 +11,26 @@ router.get('/', function(req, res, next) {
   });
 });
 
+
 router.get('/post', function(req, res, next) {
   res.render('post');
 });
 
 router.get('/post/:entry', function(req, res, next) {
-  db.models.Entry.findById(req.params.entry).then(function(entry) {
+  var query = {
+    'attributes': ['id', 'content'],
+    'include': [
+      {
+        'model': db.models.Photo,
+        'attributes': ['id', 'name', 'gid']
+      }
+    ]
+  };
+  db.models.Entry.findById(req.params.entry, query).then(function(entry) {
     res.render('post', _.extend(req.app.locals.render_data, {entry:entry}));
   });
 });
+
 
 router.get('/review/:entry', function(req, res, next) {
   db.models.Entry.findById(req.params.entry).then(function(entry) {

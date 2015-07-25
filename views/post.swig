@@ -3,7 +3,9 @@
 {% block post_scripts %}
     <script src="/post.js"></script>
     <script type="text/javascript">
-      {% if entry %}var ENTRY_ID={{entry.id}};{% endif %}
+      {%- if entry %}
+      var ENTRY_ID={{entry.id}};
+      {% endif %}
     </script>
 {% endblock %}
 
@@ -25,6 +27,11 @@
       <div class="row">
         <div class="col-md-12 post-submit">
           <button type="button" class="btn btn-info center-block" id="submit">Submit</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12 photo-list-container">
+          <div class="photo-list"></div>
         </div>
       </div>
 {%- endblock %}

@@ -88,6 +88,7 @@ var Photo = sequelize.define('Photo', {
   }
 });
 Photo.belongsTo(Entry);
+Entry.hasMany(Photo);
 
 sequelize.sync();
 
