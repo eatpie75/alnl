@@ -51,6 +51,15 @@ class Post
       })
     )
 
+    $('.add-photo-button').on('click', ()->
+      $('.add-photo-input').click()
+    )
+
+    $('.add-photo-input').on('change', (e)=>
+      $('.add-photo-button').prop('disabled', true)
+      @upload_photos(e.target.files)
+    )
+
     @photo_list.on('click', '.glyphicon-minus', (e)=>
       @delete_photo($(e.target).parent().data('id'))
     )
@@ -72,6 +81,24 @@ class Post
     })
     return
 
+  upload_photos:(files)->
+    counter=files.length
+    for file in files
+      data = new FormData()
+      data.append('file', file)
+      $.ajax({
+        url: "/api/entry/#{window.ENTRY_ID}/photos"
+        type: 'POST'
+        data: data
+        dataType: 'json'
+        processData: false
+        contentType: false
+        success:(photo)=>
+          if --counter==0 then $('.add-photo-button').prop('disabled', false)
+          @photo_list.append(@templates['photo-list-item'].render(photo))
+      })
+    return
+
   delete_photo:(id)->
     $.ajax({
       url:"/api/entry/#{window.ENTRY_ID}/photos/#{id}"
@@ -80,6 +107,7 @@ class Post
       success:(data)=>
         @photo_list.children("[data-id=#{id}]").first().remove()
     })
+    return
 
 $(document).ready(->
   window.post=new Post

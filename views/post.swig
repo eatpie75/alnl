@@ -25,7 +25,9 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-md-12 post-submit">
+        <div class="col-md-12 post-buttons">
+          <input type="file" accept="image/*" multiple class="add-photo-input hidden">
+          <button type="button" class="btn btn-success pull-right add-photo-button"><span class='glyphicon glyphicon-plus'></span>Photo</button>
           <button type="button" class="btn btn-info center-block" id="submit">Submit</button>
         </div>
       </div>

@@ -34,16 +34,19 @@ router.post('/entry/:entry/photos', busboy(), function(req, res) {
 
     var gf_pipe = file.pipe(gfile.createWriteStream());
     gf_pipe.on('complete', function(metadata) {
-      gfile.makePublic();
+      gfile.makePublic(function() {
+        var model = {
+          'name': filename,
+          'gid': metadata.name,
+          'EntryId': req.params.entry
+        };
 
-      var model = {
-        'name': filename,
-        'gid': metadata.name,
-        'EntryId': req.params.entry
-      };
-
-      db.models.Photo.create(model).then(function() {
-        res.status(201).send();
+        db.models.Photo.create(model).then(function(photo) {
+          res.status(201).send({
+            'id': photo.id,
+            'name': photo.name
+          });
+        });
       });
     });
   });

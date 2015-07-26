@@ -57,6 +57,15 @@
           });
         };
       })(this));
+      $('.add-photo-button').on('click', function() {
+        return $('.add-photo-input').click();
+      });
+      $('.add-photo-input').on('change', (function(_this) {
+        return function(e) {
+          $('.add-photo-button').prop('disabled', true);
+          return _this.upload_photos(e.target.files);
+        };
+      })(this));
       this.photo_list.on('click', '.glyphicon-minus', (function(_this) {
         return function(e) {
           return _this.delete_photo($(e.target).parent().data('id'));
@@ -88,8 +97,34 @@
       });
     };
 
+    Post.prototype.upload_photos = function(files) {
+      var counter, data, file, i, len;
+      counter = files.length;
+      for (i = 0, len = files.length; i < len; i++) {
+        file = files[i];
+        data = new FormData();
+        data.append('file', file);
+        $.ajax({
+          url: "/api/entry/" + window.ENTRY_ID + "/photos",
+          type: 'POST',
+          data: data,
+          dataType: 'json',
+          processData: false,
+          contentType: false,
+          success: (function(_this) {
+            return function(photo) {
+              if (--counter === 0) {
+                $('.add-photo-button').prop('disabled', false);
+              }
+              return _this.photo_list.append(_this.templates['photo-list-item'].render(photo));
+            };
+          })(this)
+        });
+      }
+    };
+
     Post.prototype.delete_photo = function(id) {
-      return $.ajax({
+      $.ajax({
         url: "/api/entry/" + window.ENTRY_ID + "/photos/" + id,
         method: "DELETE",
         dataType: "json",
