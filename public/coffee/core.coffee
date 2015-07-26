@@ -1,13 +1,13 @@
 $(document).ready(->
-	default_renderer=md.renderer.rules.image
-	md.renderer.rules.image = (tokens, idx, options, env, self)->
-		tokens[idx].attrs[2]=['class', 'thumbnail center-block']
-		return default_renderer(tokens, idx, options, env, self)
+  default_renderer=md.renderer.rules.image
+  md.renderer.rules.image = (tokens, idx, options, env, self)->
+    tokens[idx].attrs[2]=['class', 'thumbnail center-block']
+    return default_renderer(tokens, idx, options, env, self)
 
-	$('.entry-content, .info-content').each(()->
-		element=$(@)
-		if not element.data('parsed')
-			element.html(md.render(element.text()))
-			element.data('parsed', true)
-	)
+  $('.entry-content, .info-content').each(()->
+    element=$(@)
+    if not element.data('parsed')
+      element.html(md.render(element.text()))
+      element.data('parsed', true)
+  )
 )
