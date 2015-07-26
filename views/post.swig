@@ -26,8 +26,10 @@
       </div>
       <div class="row">
         <div class="col-md-12 post-buttons">
+          {%- if entry %}
           <input type="file" accept="image/*" multiple class="add-photo-input hidden">
           <button type="button" class="btn btn-success pull-right add-photo-button"><span class='glyphicon glyphicon-plus'></span>Photo</button>
+          {% endif %}
           <button type="button" class="btn btn-info center-block" id="submit">Submit</button>
         </div>
       </div>
