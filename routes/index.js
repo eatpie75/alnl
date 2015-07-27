@@ -5,8 +5,17 @@ var router = express.Router();
 var db = require('../models');
 
 router.get('/', function(req, res) {
-  db.models.Entry.findAll({'limit':25}).then(function(entries) {
-    res.render('index', {entries:entries});
+  var query = {
+    'limit': 25,
+    'include': [
+      {
+        'model': db.models.Photo,
+        'attributes': ['id', 'name', 'gid']
+      }
+    ]
+  };
+  db.models.Entry.findAll(query).then(function(entries) {
+    res.render('index', {entries: entries});
   });
 });
 
