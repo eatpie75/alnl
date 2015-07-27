@@ -5,7 +5,7 @@ var fuzzy_selection_update = function(original_content, new_content, original_in
   var new_information = [];
 
   original_information.forEach(function(information) {
-    var thing = {'id': information.id, selections: []};
+    var thing = {'id': information.id, 'selections': []};
 
     information.selections.forEach(function(selection) {
       var beginning = selection[0], end = selection[1];

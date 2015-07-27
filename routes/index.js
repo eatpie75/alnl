@@ -4,18 +4,18 @@ var router = express.Router();
 
 var db = require('../models');
 
-router.get('/', function(req, res, next) {
+router.get('/', function(req, res) {
   db.models.Entry.findAll({'limit':25}).then(function(entries) {
     res.render('index', {entries:entries});
   });
 });
 
 
-router.get('/post', function(req, res, next) {
+router.get('/post', function(req, res) {
   res.render('post');
 });
 
-router.get('/post/:entry', function(req, res, next) {
+router.get('/post/:entry', function(req, res) {
   var query = {
     'attributes': ['id', 'content'],
     'include': [
@@ -26,12 +26,12 @@ router.get('/post/:entry', function(req, res, next) {
     ]
   };
   db.models.Entry.findById(req.params.entry, query).then(function(entry) {
-    res.render('post', {entry:entry});
+    res.render('post', {entry: entry});
   });
 });
 
 
-router.get('/review/:entry', function(req, res, next) {
+router.get('/review/:entry', function(req, res) {
   db.models.Entry.findById(req.params.entry).then(function(entry) {
     var metadata = entry.get_metadata();
     var queue = [];
@@ -46,24 +46,24 @@ router.get('/review/:entry', function(req, res, next) {
           'id': thing_instance.id,
           'name': thing_instance.name,
           'url': '',
-          'selections': (metadata.information[i].selections) ? metadata.information[i].selections.map(function(val) {return [val[0], val[1]];}) : []
+          'selections': (metadata.information[i].selections) ? metadata.information[i].selections.map(function(val) { return [val[0], val[1]]; }) : []
         };
        });
-      res.render('review', {'entry':entry, 'information':information});
+      res.render('review', {'entry': entry, 'information': information});
     });
   });
 });
 
 
-router.get('/thing/:name', function(req, res, next) {
-  db.models.Thing.findOne({'where':{'name':req.params.name}}).then(function(thing) {
+router.get('/thing/:name', function(req, res) {
+  db.models.Thing.findOne({'where': {'name': req.params.name}}).then(function(thing) {
     res.redirect(thing.get_url());
   });
 });
-router.get('/thing/:id/:slug', function(req, res, next) {
+router.get('/thing/:id/:slug', function(req, res) {
   db.models.Thing.findById(req.params.id).then(function(thing) {
-    db.models.Information.findAll({'where':{'ThingId':thing.id}}).then(function(information) {
-      res.render('thing', {'thing':thing, 'information':information.map(function(d){return d.get_data();})});
+    db.models.Information.findAll({'where': {'ThingId': thing.id}}).then(function(information) {
+      res.render('thing', {'thing': thing, 'information': information.map(function(d){ return d.get_data(); })});
     });
   });
 });

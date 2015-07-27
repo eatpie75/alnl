@@ -4,10 +4,12 @@ var swig_date = require('swig/lib/filters').date;
 
 var sequelize = new Sequelize(process.env.DATABASE_URL || 'sqlite://db.sqlite3');
 
-var Entry = sequelize.define('Entry', {
+var Entry, Thing, Information, Photo;
+
+Entry = sequelize.define('Entry', {
   'date': Sequelize.DATEONLY,
   'content': Sequelize.TEXT,
-  'metadata': {type:Sequelize.TEXT, defaultValue:'{}'},
+  'metadata': {type: Sequelize.TEXT, defaultValue: '{}'},
   'analyzed': Sequelize.BOOLEAN,
   'analyze_date': Sequelize.DATE
 }, {
@@ -35,7 +37,7 @@ var Entry = sequelize.define('Entry', {
               'content': _this.content.slice(selection[0], selection[1]),
               'date': swig_date(_this.date, 'l F jS, Y')
             };
-            new_information.push({'name':_this.date, 'data':JSON.stringify(data), 'ThingId':information.id});
+            new_information.push({'name': _this.date, 'data': JSON.stringify(data), 'ThingId': information.id});
           });
         });
         Information.bulkCreate(new_information);
@@ -44,8 +46,8 @@ var Entry = sequelize.define('Entry', {
   }
 });
 
-var Thing = sequelize.define('Thing', {
-  'date_created': {type:Sequelize.DATE, defaultValue:Sequelize.NOW},
+Thing = sequelize.define('Thing', {
+  'date_created': {type: Sequelize.DATE, defaultValue: Sequelize.NOW},
   'name': Sequelize.STRING,
   'slug': Sequelize.STRING,
   'content': Sequelize.TEXT
@@ -64,10 +66,10 @@ var Thing = sequelize.define('Thing', {
   }
 });
 
-var Information = sequelize.define('Information', {
+Information = sequelize.define('Information', {
   'name': Sequelize.STRING,
   'kind': Sequelize.INTEGER,
-  'data': {type:Sequelize.TEXT, defaultValue:'{}'},
+  'data': {type: Sequelize.TEXT, defaultValue: '{}'}
 }, {
   'instanceMethods': {
     'get_data': function() {
@@ -77,7 +79,7 @@ var Information = sequelize.define('Information', {
 });
 Information.belongsTo(Thing);
 
-var Photo = sequelize.define('Photo', {
+Photo = sequelize.define('Photo', {
   'name': Sequelize.STRING,
   'gid': Sequelize.STRING(512)
 }, {

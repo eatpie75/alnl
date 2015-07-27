@@ -8,10 +8,10 @@ var uuid = require('node-uuid');
 
 var db = require('../models');
 
-router.get('/entry/:entry/photos', function(req, res, next) {
+router.get('/entry/:entry/photos', function(req, res) {
   var query = {
     'where': {
-      'EntryId':req.params.entry
+      'EntryId': req.params.entry
     },
     'attributes': ['id', 'name']
   };
@@ -54,26 +54,26 @@ router.post('/entry/:entry/photos', busboy(), function(req, res) {
   req.pipe(req.busboy);
 });
 
-router.delete('/entry/:entry/photos/:id', function(req, res, next) {
+router.delete('/entry/:entry/photos/:id', function(req, res) {
   var query = {
     'where': {
       'id': req.params.id,
-      'EntryId':req.params.entry
+      'EntryId': req.params.entry
     }
   };
 
 
   db.models.Photo.findOne(query).then(function(photo) {
-    get_gcloud().bucket('alnl').file(photo.gid).delete(function(err, data) {
-      if (err) console.error(err);
+    get_gcloud().bucket('alnl').file(photo.gid).delete(function(err) {
+      if (err) { console.error(err); }
       photo.destroy().then(function() {
-        res.json({'success':true});
+        res.json({'success': true});
       });
     });
   });
 });
 
-router.put('/entry/:entry', function(req, res, next) {
+router.put('/entry/:entry', function(req, res) {
   db.models.Entry.findById(req.params.entry).then(function(entry) {
     var new_content = req.body.content;
 
@@ -86,18 +86,18 @@ router.put('/entry/:entry', function(req, res, next) {
     entry.content = new_content;
     return entry.save();
   }).then(function(entry) {
-    res.json({'redirect':entry.get_review_url()});
+    res.json({'redirect': entry.get_review_url()});
   });
 });
 
-router.post('/entry', function(req, res, next) {
-  db.models.Entry.create({'date':new Date(), 'content':req.body.content}).then(function(entry) {
-    res.json({'redirect':entry.get_review_url()});
+router.post('/entry', function(req, res) {
+  db.models.Entry.create({'date': new Date(), 'content': req.body.content}).then(function(entry) {
+    res.json({'redirect': entry.get_review_url()});
   });
 });
 
 
-router.post('/review/:entry', function(req, res, next) {
+router.post('/review/:entry', function(req, res) {
   db.models.Entry.findById(req.params.entry).then(function(entry) {
     var metadata = entry.get_metadata();
     metadata.information = JSON.parse(req.body.selections);
@@ -108,9 +108,9 @@ router.post('/review/:entry', function(req, res, next) {
   });
 });
 
-router.get('/thing_suggest', function(req, res, next) {
+router.get('/thing_suggest', function(req, res) {
   var fragment = '%' + req.query.fragment + '%';
-  db.models.Thing.findAll({'where':{'name':{'$like':fragment}}}).then(function(things) {
+  db.models.Thing.findAll({'where': {'name': {'$like': fragment}}}).then(function(things) {
     res.json(things.map(function(thing) {
       return {
         'id': thing.id,
