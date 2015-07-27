@@ -1,4 +1,3 @@
-var _ = require('underscore');
 var express = require('express');
 var Promise = require('bluebird');
 var router = express.Router();
@@ -7,7 +6,7 @@ var db = require('../models');
 
 router.get('/', function(req, res, next) {
   db.models.Entry.findAll({'limit':25}).then(function(entries) {
-    res.render('index', _.extend(req.app.locals.render_data, {entries:entries}));
+    res.render('index', {entries:entries});
   });
 });
 
@@ -27,7 +26,7 @@ router.get('/post/:entry', function(req, res, next) {
     ]
   };
   db.models.Entry.findById(req.params.entry, query).then(function(entry) {
-    res.render('post', _.extend(req.app.locals.render_data, {entry:entry}));
+    res.render('post', {entry:entry});
   });
 });
 
@@ -50,7 +49,7 @@ router.get('/review/:entry', function(req, res, next) {
           'selections': (metadata.information[i].selections) ? metadata.information[i].selections.map(function(val) {return [val[0], val[1]];}) : []
         };
        });
-      res.render('review', _.extend(req.app.locals.render_data, {'entry':entry, 'information':information}));
+      res.render('review', {'entry':entry, 'information':information});
     });
   });
 });
@@ -64,7 +63,7 @@ router.get('/thing/:name', function(req, res, next) {
 router.get('/thing/:id/:slug', function(req, res, next) {
   db.models.Thing.findById(req.params.id).then(function(thing) {
     db.models.Information.findAll({'where':{'ThingId':thing.id}}).then(function(information) {
-      res.render('thing', _.extend(req.app.locals.render_data, {'thing':thing, 'information':information.map(function(d){return d.get_data();})}));      
+      res.render('thing', {'thing':thing, 'information':information.map(function(d){return d.get_data();})});
     });
   });
 });

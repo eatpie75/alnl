@@ -23,8 +23,7 @@
     "serve-favicon": "~2.3",
     "slug": "^0.9.1",
     "sqlite3": "^3.0.9",
-    "swig": "~1.4",
-    "underscore": "^1.8.3"
+    "swig": "~1.4"
   },
   "devDependencies": {
     "chai": "^3.0.0",
