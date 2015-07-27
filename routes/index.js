@@ -7,6 +7,7 @@ var db = require('../models');
 router.get('/', function(req, res) {
   var query = {
     'limit': 25,
+    'order': [['date', 'DESC']],
     'include': [
       {
         'model': db.models.Photo,
