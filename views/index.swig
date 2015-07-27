@@ -12,11 +12,13 @@
             </h2>
             {%- if entry.Photos.length %}
             <div id="entry-photos-container-{{entry.id}}" class="entry-photos-container carousel slide" data-interval="false">
+              {%- if entry.Photos.length > 1 %}
               <ol class="carousel-indicators">
                 {%- for photo in entry.Photos %}
                 <li data-target="#entry-photos-container-{{entry.id}}" data-slide-to="{{loop.index0}}"{% if loop.first %} class="active"{% endif %}></li>
                 {%- endfor %}
               </ol>
+              {%- endif %}
 
               <div class="carousel-inner" role="listbox">
                 {%- for photo in entry.Photos %}
@@ -26,6 +28,7 @@
                 {%- endfor %}
               </div>
 
+              {%- if entry.Photos.length > 1 %}
               <a class="left carousel-control" href="#entry-photos-container-{{entry.id}}" role="button" data-slide="prev">
                 <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
                 <span class="sr-only">Previous</span>
@@ -34,6 +37,7 @@
                 <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                 <span class="sr-only">Next</span>
               </a>
+              {%- endif %}
             </div>
             {%- endif %}
             <div class="entry-content" data-parsed="false">{{entry.content}}</div>
