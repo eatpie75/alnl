@@ -42,7 +42,7 @@ router.post('/entry/:entry/photos', busboy(), function(req, res) {
         };
 
         db.models.Photo.create(model).then(function(photo) {
-          res.status(201).send({
+          res.status(201).json({
             'id': photo.id,
             'name': photo.name
           });
