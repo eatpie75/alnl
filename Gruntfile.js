@@ -33,7 +33,7 @@ module.exports = function (grunt) {
     clean: {
       css: ['<%= config.dist %>/*.css'],
       js: ['<%= config.dist %>/*.js'],
-      fonts: ['<%= config.dist %>/fonts'],
+      fonts: ['<%= config.dist %>/fonts']
       // less: ['<%= config.dist %>/*.less'],
     },
 
@@ -53,7 +53,7 @@ module.exports = function (grunt) {
           '<%= config.lib %>/jquery/dist/jquery.min.js',
           '<%= config.lib %>/hogan/web/builds/3.0.2/hogan-3.0.2.min.js',
           '<%= config.lib %>/markdown-it/dist/markdown-it.min.js',
-          '<%= config.lib %>/bootstrap/dist/js/bootstrap.min.js',
+          '<%= config.lib %>/bootstrap/dist/js/bootstrap.min.js'
         ],
         dest: '<%= config.dist %>/libs.js'
       },
@@ -96,7 +96,7 @@ module.exports = function (grunt) {
         src: ['**/*.js', '!public/**/.js', '!node_modules/**/*.js']
       },
       client: {
-        src: ['public/**/*.js', '!<%= config.lib %>/**/*.js', '!<%= config.dist %>/*.js'],
+        src: ['public/**/*.js', '!<%= config.lib %>/**/*.js', '!<%= config.dist %>/*.js']
       }
     },
 
@@ -104,7 +104,7 @@ module.exports = function (grunt) {
       dev: {
         options: {
           compress: false,
-          mangle:false
+          mangle: false
         },
         files: [{
             expand: true,
@@ -116,7 +116,7 @@ module.exports = function (grunt) {
       prod: {
         options: {
           compress: true,
-          mangle:true
+          mangle: true
         },
         files: [{
             expand: true,
