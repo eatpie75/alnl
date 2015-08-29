@@ -37,7 +37,7 @@ Entry = sequelize.define('Entry', {
               'content': _this.content.slice(selection[0], selection[1]),
               'date': swig_date(_this.date, 'l F jS, Y')
             };
-            new_information.push({'name': _this.date, 'data': JSON.stringify(data), 'ThingId': information.id});
+            new_information.push({'name': _this.date, 'data': JSON.stringify(data), 'ThingId': information.id, 'EntryId': _this.id});
           });
         });
         Information.bulkCreate(new_information);
@@ -78,6 +78,7 @@ Information = sequelize.define('Information', {
   }
 });
 Information.belongsTo(Thing);
+Information.belongsTo(Entry);
 
 Photo = sequelize.define('Photo', {
   'name': Sequelize.STRING,
