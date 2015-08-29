@@ -98,6 +98,9 @@
             results = [];
             for (j = 0, len = data.length; j < len; j++) {
               thing = data[j];
+              if (window.thing_manager.things[thing.id]) {
+                continue;
+              }
               results.push($("<li class='list-group-item thing-list-item' data-id='" + thing.id + "' data-name='" + thing.name + "' data-url='" + thing.url + "'> <a href='" + thing.url + "'>" + thing.name + "</a> <span class='glyphicon glyphicon-plus text-success'></span> </li>").appendTo(_this.thing_list));
             }
             return results;
@@ -117,7 +120,7 @@
       this.things = {};
       this.thing_tree = $('.thing-tree');
       this.templates = {
-        'thing-tree-item': Hogan.compile("<li class='thing-tree-item'> <span class='thing-tree-item-name'>{{name}}</span><span class='glyphicon glyphicon-plus thing-add'></span> <ul class='selection-tree'></ul> </li>"),
+        'thing-tree-item': Hogan.compile("<li class='thing-tree-item'> <span class='glyphicon glyphicon-minus thing-remove'></span><span class='thing-tree-item-name'>{{name}}</span><span class='glyphicon glyphicon-plus thing-add'></span> <ul class='selection-tree'></ul> </li>"),
         'selection-tree-item': Hogan.compile("<li class='selection-tree-item'> <span class=''>{{text}}</span><span class='glyphicon glyphicon-minus selection-remove'></span> </li>")
       };
     }
@@ -131,12 +134,24 @@
           selections: []
         };
         element = $(this.templates['thing-tree-item'].render(data)).appendTo(this.thing_tree);
-        this.things[data.id]['element'] = element;
-        return element.children('.thing-add').on('click', (function(_this) {
+        this.things[data.id].element = element;
+        element.children('.thing-add').on('click', (function(_this) {
           return function() {
             return _this.activate_selector.call(_this, data.id);
           };
         })(this));
+        return element.children('.thing-remove').on('click', (function(_this) {
+          return function() {
+            return _this.remove_thing(data.id);
+          };
+        })(this));
+      }
+    };
+
+    ThingManager.prototype.remove_thing = function(id) {
+      if (id in this.things) {
+        this.things[id].element.remove();
+        return delete this.things[id];
       }
     };
 

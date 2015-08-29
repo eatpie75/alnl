@@ -68,6 +68,7 @@ class ThingSearch
         $('.thing-search-form>div>span.glyphicon').remove()
         @thing_list.empty()
         for thing in data
+          if window.thing_manager.things[thing.id] then continue
           $("<li class='list-group-item thing-list-item' data-id='#{thing.id}' data-name='#{thing.name}' data-url='#{thing.url}'>
               <a href='#{thing.url}'>#{thing.name}</a>
               <span class='glyphicon glyphicon-plus text-success'></span>
@@ -96,7 +97,7 @@ class ThingManager
     @templates={
       'thing-tree-item':Hogan.compile("
         <li class='thing-tree-item'>
-          <span class='thing-tree-item-name'>{{name}}</span><span class='glyphicon glyphicon-plus thing-add'></span>
+          <span class='glyphicon glyphicon-minus thing-remove'></span><span class='thing-tree-item-name'>{{name}}</span><span class='glyphicon glyphicon-plus thing-add'></span>
           <ul class='selection-tree'></ul>
         </li>")
       'selection-tree-item':Hogan.compile("
@@ -108,10 +109,17 @@ class ThingManager
     if data.id not of @things
       @things[data.id]={'name':data.name, 'url':data.url, selections:[]}
       element=$(@templates['thing-tree-item'].render(data)).appendTo(@thing_tree)
-      @things[data.id]['element']=element
+      @things[data.id].element=element
       element.children('.thing-add').on('click', ()=>
         @activate_selector.call(@, data.id)
       )
+      element.children('.thing-remove').on('click', ()=>
+        @remove_thing(data.id)
+      )
+  remove_thing:(id)->
+    if id of @things
+      @things[id].element.remove()
+      delete @things[id]
   get_selection:()->
     selection=window.getSelection()
     anchor=$(selection.anchorNode)
