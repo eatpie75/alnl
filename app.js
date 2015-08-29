@@ -24,7 +24,7 @@ swig.setDefaults({
     'debug': false, //(app.get('env') === 'development'),
     'title': 'ALNL'
   },
-  'cache': (app.get('env') === 'development')
+  'cache': (app.get('env') === 'development') ? false : 'memory'
 });
 
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
