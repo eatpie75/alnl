@@ -19,7 +19,7 @@
     "node-uuid": "^1.4.3",
     "pg": "^4.4.0",
     "pg-hstore": "^2.3.2",
-    "sequelize": "~3.4",
+    "sequelize": "~3.6",
     "serve-favicon": "~2.3",
     "slug": "^0.9.1",
     "sqlite3": "^3.0.9",
