@@ -29,8 +29,8 @@ Entry = sequelize.define('Entry', {
     'analyze_information': function() {
       var metadata = this.get_metadata();
       var _this = this;
+      var new_information = [];
       if (metadata.information) {
-        var new_information = [];
         metadata.information.forEach(function(information) {
           information.selections.forEach(function(selection) {
             var data = {
@@ -40,8 +40,13 @@ Entry = sequelize.define('Entry', {
             new_information.push({'name': _this.date, 'data': JSON.stringify(data), 'ThingId': information.id, 'EntryId': _this.id});
           });
         });
-        Information.bulkCreate(new_information);
       }
+
+      return Information.destroy({'where': {'EntryId': _this.id}}).then(function() {
+        if (!new_information.length) return [];
+
+        return Information.bulkCreate(new_information);
+      });
     }
   }
 });
