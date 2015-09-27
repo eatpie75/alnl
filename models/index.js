@@ -92,6 +92,13 @@ Thing = sequelize.define('Thing', {
   'instanceMethods': {
     'get_url': function() {
       return '/thing/' + this.id + '/' + this.slug;
+    },
+    'search_output': function() {
+      return {
+        'id': this.id,
+        'name': this.name,
+        'url': this.get_url()
+      };
     }
   }
 });

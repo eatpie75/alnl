@@ -106,15 +106,21 @@ router.post('/review/:entry', function(req, res) {
   });
 });
 
-router.get('/thing_suggest', function(req, res) {
+router.get('/thing/suggest', function(req, res) {
   var fragment = '%' + req.query.fragment + '%';
   db.models.Thing.findAll({'where': {'name': {'$like': fragment}}}).then(function(things) {
     res.json(things.map(function(thing) {
-      return {
-        'id': thing.id,
-        'name': thing.name,
-        'url': ''
-      };
+      return thing.search_output();
+    }));
+  });
+});
+
+router.get('/thing/search', function(req, res) {
+  var names = req.query.names;
+
+  db.models.Thing.findAll({'where': {'name': {'$in': names}}}).then(function(things) {
+    res.json(things.map(function(thing) {
+      return thing.search_output();
     }));
   });
 });

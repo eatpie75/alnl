@@ -37,7 +37,22 @@ class ThingSearch
           console.log data
       })
     )
+    @fill_probable_things()
 
+  fill_probable_things:()->
+    tokens = md.parseInline($('.review-content').text())[0].children
+    things = tokens.reduce((result, item)->
+      if item.type != 'hashtag_text' then return result
+      return result.concat([item.content])
+    , [])
+
+    if (!things.length) then return
+    $.ajax({
+      'url': '/api/thing/search'
+      'data': {'names': things}
+      'dataType': 'json'
+      success: @render_suggestions.bind(@)
+    })
   handle_input:(e)->
     if e.keyCode==13
       if @thing_list.children('.thing-list-item').length==1
@@ -61,20 +76,21 @@ class ThingSearch
     $('.thing-search-form>div>span.glyphicon').remove()
     $('.thing-search-form>div').append($('<span class="glyphicon glyphicon-refresh"></span>'))
     $.ajax({
-      url:"/api/thing_suggest"
+      url:"/api/thing/suggest"
       data:{'fragment':@thing_search.val()}
       dataType:'json'
-      success:(data)=>
-        $('.thing-search-form>div>span.glyphicon').remove()
-        @thing_list.empty()
-        for thing in data
-          if window.thing_manager.things[thing.id] then continue
-          $("<li class='list-group-item thing-list-item' data-id='#{thing.id}' data-name='#{thing.name}' data-url='#{thing.url}'>
-              <a href='#{thing.url}'>#{thing.name}</a>
-              <span class='glyphicon glyphicon-plus text-success'></span>
-            </li>"
-          ).appendTo(@thing_list)
+      success: @render_suggestions.bind(@)
     })
+  render_suggestions:(suggestions)->
+    $('.thing-search-form>div>span.glyphicon').remove()
+    @thing_list.empty()
+    for thing in suggestions
+      if window.thing_manager.things[thing.id] then continue
+      $("<li class='list-group-item thing-list-item' data-id='#{thing.id}' data-name='#{thing.name}' data-url='#{thing.url}'>
+          <a href='#{thing.url}'>#{thing.name}</a>
+          <span class='glyphicon glyphicon-plus text-success'></span>
+        </li>"
+      ).appendTo(@thing_list)
   add_tag:()->
     # tag_search=$('#tag_search')
     # $.ajax({
