@@ -104,7 +104,7 @@ Thing = sequelize.define('Thing', {
 });
 
 Information = sequelize.define('Information', {
-  'name': Sequelize.STRING,
+  'date': Sequelize.DATEONLY,
   'kind': Sequelize.INTEGER,
   'data': {type: Sequelize.TEXT, defaultValue: '{}'}
 }, {

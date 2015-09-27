@@ -78,7 +78,7 @@ router.get('/thing/:name', function(req, res) {
 });
 router.get('/thing/:id/:slug', function(req, res) {
   db.models.Thing.findById(req.params.id).then(function(thing) {
-    db.models.Information.findAll({'where': {'ThingId': thing.id}}).then(function(information) {
+    db.models.Information.findAll({'where': {'ThingId': thing.id}, 'order': [['date', 'DESC']]}).then(function(information) {
       res.render('thing', {'thing': thing, 'information': information.map(function(d){ return d.get_data(); })});
     });
   });
