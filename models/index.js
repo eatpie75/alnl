@@ -1,6 +1,7 @@
 var Sequelize = require('sequelize');
 var slug = require('slug');
 var swig_date = require('swig/lib/filters').date;
+var fuzzy_selection_update = require('../utils/fuzzy_selection_update');
 
 var sequelize = new Sequelize(process.env.DATABASE_URL || 'sqlite://db.sqlite3', {'logging': null});
 
@@ -8,7 +9,12 @@ var Entry, Thing, Information, Photo;
 
 Entry = sequelize.define('Entry', {
   'date': Sequelize.DATEONLY,
-  'content': Sequelize.TEXT,
+  'content': {
+    'type': Sequelize.TEXT,
+    'set': function(content) {
+      this.setDataValue('content', content.replace(/\r\n/g, '\n'));
+    }
+  },
   'metadata': {type: Sequelize.TEXT, defaultValue: '{}'},
   'analyzed': Sequelize.BOOLEAN,
   'analyze_date': Sequelize.DATE
@@ -25,6 +31,16 @@ Entry = sequelize.define('Entry', {
     },
     'get_metadata': function() {
       return JSON.parse(this.metadata);
+    },
+    'update_content': function(new_content) {
+      var old_content = this.content;
+      this.content = new_content;
+      var metadata = this.get_metadata();
+
+      if ('information' in metadata) {
+        metadata.information = fuzzy_selection_update(old_content, this.content, metadata.information);
+        this.metadata = JSON.stringify(metadata);
+      }
     },
     'analyze_information': function() {
       var metadata = this.get_metadata();

@@ -76,14 +76,8 @@ router.delete('/entry/:entry/photos/:id', function(req, res) {
 router.put('/entry/:entry', function(req, res) {
   db.models.Entry.findById(req.params.entry).then(function(entry) {
     var new_content = req.body.content;
+    entry.update_content(new_content);
 
-    var metadata = entry.get_metadata();
-    if ('information' in metadata) {
-      metadata.information = fuzzy_selection_update(entry.content, new_content, metadata.information);
-      entry.metadata = JSON.stringify(metadata);
-    }
-
-    entry.content = new_content;
     return entry.save();
   }).then(function(entry) {
     res.json({'redirect': entry.get_review_url()});
