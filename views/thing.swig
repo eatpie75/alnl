@@ -4,6 +4,7 @@
       <div class="row">
         <div class="col-md-3">
           <h2>{{thing.name}}</h2>
+          <div class="thing-content" data-parsed="false">{{thing.content}}</div>
         </div>
         <div class="col-md-6">
           {%- for info in information %}
