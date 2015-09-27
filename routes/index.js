@@ -20,6 +20,12 @@ router.get('/', function(req, res) {
   });
 });
 
+router.get('/:year(\\d{4})-:month(\\d{2})-:day(\\d{2})', function(req, res) {
+  var date = [req.params.year, req.params.month, req.params.day].join('-');
+  db.models.Entry.findOne({'where': {'date': date}}).then(function(entry) {
+    res.render('single', {'entry': entry, 'timeline': entry.get_metadata().timeline});
+  });
+});
 
 router.get('/post', function(req, res) {
   res.render('post');

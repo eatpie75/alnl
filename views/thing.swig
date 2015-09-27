@@ -7,9 +7,9 @@
         </div>
         <div class="col-md-6">
           {%- for info in information %}
-          <section class='info'>
-            <h4><a href=''>{{info.date}}</a></h4>
-            <div class='info-content' data-parsed="false">{{info.content}}</div>
+          <section class="info">
+            <h4><a href="/{{info.date}}">{{info.date|date('l F jS, Y')}}</a></h4>
+            <div class="info-content" data-parsed="false">{{info.content}}</div>
           </section>
           {%- endfor %}
         </div>

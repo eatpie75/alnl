@@ -8,7 +8,16 @@ var sequelize = new Sequelize(process.env.DATABASE_URL || 'sqlite://db.sqlite3',
 var Entry, Thing, Information, Photo;
 
 Entry = sequelize.define('Entry', {
-  'date': Sequelize.DATEONLY,
+  'date': {
+    'type': Sequelize.DATEONLY,
+    'defaultValue': function() {
+      return swig_date(new Date(), 'Y-m-d');
+    },
+    'set': function(date) {
+      if (!(date instanceof Date)) date = new Date(date);
+      this.setDataValue('date', swig_date(date, 'Y-m-d'));
+    }
+  },
   'content': {
     'type': Sequelize.TEXT,
     'set': function(content) {
@@ -21,7 +30,7 @@ Entry = sequelize.define('Entry', {
 }, {
   'instanceMethods': {
     'get_url': function() {
-      return '/' + this.id;
+      return '/' + this.date;
     },
     'get_edit_url': function() {
       return '/post/' + this.id;
@@ -51,7 +60,7 @@ Entry = sequelize.define('Entry', {
           information.selections.forEach(function(selection) {
             var data = {
               'content': _this.content.slice(selection[0], selection[1]),
-              'date': swig_date(_this.date, 'l F jS, Y')
+              'date': _this.date
             };
             new_information.push({'name': _this.date, 'data': JSON.stringify(data), 'ThingId': information.id, 'EntryId': _this.id});
           });

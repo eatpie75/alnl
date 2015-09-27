@@ -85,7 +85,7 @@ router.put('/entry/:entry', function(req, res) {
 });
 
 router.post('/entry', function(req, res) {
-  db.models.Entry.create({'date': new Date(), 'content': req.body.content}).then(function(entry) {
+  db.models.Entry.create({'content': req.body.content}).then(function(entry) {
     res.json({'redirect': entry.get_review_url()});
   });
 });
