@@ -157,7 +157,7 @@
         this.things[data.id] = {
           'name': data.name,
           'url': data.url,
-          selections: []
+          'selections': []
         };
         element = $(this.templates['thing-tree-item'].render(data)).appendTo(this.thing_tree);
         this.things[data.id].element = element;
