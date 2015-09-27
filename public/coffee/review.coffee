@@ -105,7 +105,7 @@ class ThingSearch
     # })
 
 class ThingManager
-  constructor:()->
+  constructor:(information)->
     @things={}
 
     @thing_tree=$('.thing-tree')
@@ -121,6 +121,9 @@ class ThingManager
           <span class=''>{{text}}</span><span class='glyphicon glyphicon-minus selection-remove'></span>
         </li>")
     }
+
+    if information?
+      @loadJSON(information)
   add_thing:(data)->
     if data.id not of @things
       @things[data.id]={'name':data.name, 'url':data.url, selections:[]}
@@ -194,7 +197,5 @@ class ThingManager
 
 $(document).ready(->
   window.thing_search=new ThingSearch
-  window.thing_manager=new ThingManager
-  if window.ENTRY_INFORMATION
-    window.thing_manager.loadJSON(window.ENTRY_INFORMATION)
+  window.thing_manager=new ThingManager(window.ENTRY_INFORMATION)
 )

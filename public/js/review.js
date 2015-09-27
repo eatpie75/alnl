@@ -139,13 +139,16 @@
   })();
 
   ThingManager = (function() {
-    function ThingManager() {
+    function ThingManager(information) {
       this.things = {};
       this.thing_tree = $('.thing-tree');
       this.templates = {
         'thing-tree-item': Hogan.compile("<li class='thing-tree-item'> <span class='glyphicon glyphicon-minus thing-remove'></span><span class='thing-tree-item-name'>{{name}}</span><span class='glyphicon glyphicon-plus thing-add'></span> <ul class='selection-tree'></ul> </li>"),
         'selection-tree-item': Hogan.compile("<li class='selection-tree-item'> <span class=''>{{text}}</span><span class='glyphicon glyphicon-minus selection-remove'></span> </li>")
       };
+      if (information != null) {
+        this.loadJSON(information);
+      }
     }
 
     ThingManager.prototype.add_thing = function(data) {
@@ -286,10 +289,7 @@
 
   $(document).ready(function() {
     window.thing_search = new ThingSearch;
-    window.thing_manager = new ThingManager;
-    if (window.ENTRY_INFORMATION) {
-      return window.thing_manager.loadJSON(window.ENTRY_INFORMATION);
-    }
+    return window.thing_manager = new ThingManager(window.ENTRY_INFORMATION);
   });
 
 }).call(this);
