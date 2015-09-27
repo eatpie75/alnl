@@ -114,6 +114,9 @@ Photo = sequelize.define('Photo', {
 Photo.belongsTo(Entry);
 Entry.hasMany(Photo);
 
+Entry.belongsToMany(Thing, {'through': 'EntryThing'});
+Thing.belongsToMany(Entry, {'through': 'EntryThing'});
+
 sequelize.sync();
 
 module.exports = sequelize;

@@ -96,6 +96,9 @@ router.post('/review/:entry', function(req, res) {
     var metadata = entry.get_metadata();
     metadata.information = JSON.parse(req.body.selections);
     entry.metadata = JSON.stringify(metadata);
+
+    entry.setThings(metadata.information.map(function(thing) {return thing.id;}));
+
     return entry.save();
   }).then(function() {
     res.json({});
