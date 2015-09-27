@@ -99,6 +99,7 @@ router.post('/review/:entry', function(req, res) {
 
     entry.setThings(metadata.information.map(function(thing) {return thing.id;}));
 
+    entry.analyze_information();
     return entry.save();
   }).then(function() {
     res.json({});
