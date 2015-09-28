@@ -64,7 +64,7 @@ module.exports = function (grunt) {
       },
       client: {
         files: ['<%= config.js %>/*.js'],
-        tasks: [/*'jshint:client',*/ 'uglify:dev']
+        tasks: [/*'jshint:client',*/ 'browserify:prod', 'uglify:dev']
       },
       less: {
         files: ['<%= config.less %>/app/*.less'],
@@ -94,14 +94,12 @@ module.exports = function (grunt) {
       dev: {
         options: {
           compress: false,
-          mangle: false
+          mangle: false,
+          sourceMap: true
         },
-        files: [{
-            expand: true,
-            cwd: '<%= config.js %>',
-            src: '**/*.js',
-            dest: '<%= config.dist %>'
-        }]
+        files: {
+          '<%= config.dist %>/main.js': ['<%= config.dist %>/main.js']
+        }
       },
       prod: {
         options: {
@@ -109,7 +107,7 @@ module.exports = function (grunt) {
           mangle: true
         },
         files: {
-          '<%= config.dist %>/main.js': ['<%= config.js %>/*.js']
+          '<%= config.dist %>/main.js': ['<%= config.dist %>/main.js']
         }
       }
     },
@@ -142,9 +140,11 @@ module.exports = function (grunt) {
       }
     },
 
-    nodemon: {
-      local: {
-        script: 'bin/www'
+    browserify: {
+      prod: {
+        files: {
+          '<%= config.dist %>/main.js': ['<%= config.js %>/*.js']
+        }
       }
     }
   });
@@ -169,6 +169,7 @@ module.exports = function (grunt) {
     'less',
     'concat',
     'copy',
+    'browserify:prod',
     'uglify:prod'
   ]);
 
