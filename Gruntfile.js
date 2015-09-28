@@ -1,33 +1,21 @@
 'use strict';
 
-// # Globbing
-// for performance reasons we're only matching one level down:
-// 'test/spec/{,*/}*.js'
-// If you want to recursively match all subfolders, use:
-// 'test/spec/**/*.js'
-
 module.exports = function (grunt) {
-
-  // Time how long tasks take. Can help when optimizing build times
   require('time-grunt')(grunt);
 
-  // Automatically load required grunt tasks
   require('jit-grunt')(grunt, {
       useminPrepare: 'grunt-usemin'
   });
 
-  // Configurable paths
   var config = {
+    coffee: 'public/coffee',
     js: 'public/js',
     lib: 'lib',
     less: 'public/less',
     dist: 'public/dist'
   };
 
-  // Define the configuration for all the tasks
   grunt.initConfig({
-
-    // Project settings
     config: config,
 
     clean: {
@@ -66,14 +54,17 @@ module.exports = function (grunt) {
       }
     },
 
-    // Watches files for changes and runs tasks based on the changed files
     watch: {
       server: {
         files: ['**/*.js', '!public/**/*.js', '!node_modules/**/*.js'],
         tasks: ['jshint:server']
       },
+      coffee: {
+        files: ['<%= config.coffee %>/*.coffee'],
+        tasks: ['coffee:dev']
+      },
       client: {
-        files: ['public/**/*.js', '!<%= config.lib %>/**/*.js', '!<%= config.dist %>/*.js'],
+        files: ['<%= config.js %>/*.js'],
         tasks: [/*'jshint:client',*/ 'uglify:dev']
       },
       less: {
@@ -93,10 +84,10 @@ module.exports = function (grunt) {
         ]
       },
       server: {
-        src: ['**/*.js', '!public/**/.js', '!node_modules/**/*.js']
+        src: ['**/*.js', '!public/**/*.js', '!node_modules/**/*.js']
       },
       client: {
-        src: ['public/**/*.js', '!<%= config.lib %>/**/*.js', '!<%= config.dist %>/*.js']
+        src: ['<%= config.js %>/*.js', '!<%= config.js %>/markdown-it-thingtag.js', '!<%= config.lib %>/**/*.js', '!<%= config.dist %>/*.js']
       }
     },
 
@@ -118,18 +109,27 @@ module.exports = function (grunt) {
           compress: true,
           mangle: true
         },
-        files: [{
-            expand: true,
-            cwd: '<%= config.js %>',
-            src: '**/*.js',
-            dest: '<%= config.dist %>'
-        }]
+        files: {
+          '<%= config.dist %>/main.js': ['<%= config.js %>/*.js']
+        }
       }
     },
 
     mochaTest: {
       all: {
         src: ['test/*.js']
+      }
+    },
+
+    coffee: {
+      dev: {
+        files: [{
+          expand: true,
+          cwd: '<%= config.coffee %>',
+          src: '*.coffee',
+          dest: '<%= config.js %>',
+          ext: '.js'
+        }]
       }
     },
 
@@ -164,6 +164,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean',
+    'coffee',
     // 'jshint',
     'mochaTest',
     'less',
