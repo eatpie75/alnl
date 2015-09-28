@@ -1,7 +1,9 @@
 (function() {
-  var ThingManager, ThingSearch;
+  var get_parsed_thingtags;
 
-  ThingSearch = (function() {
+  get_parsed_thingtags = require('./utils').get_parsed_thingtags;
+
+  window.ThingSearch = (function() {
     function ThingSearch() {
       this.input_timeout = null;
       this.previous_value = '';
@@ -51,13 +53,8 @@
     };
 
     ThingSearch.prototype.fill_probable_things = function() {
-      var things, tokens;
-      tokens = md.parseInline($('.review-content').text())[0].children;
-      things = tokens.filter(function(item, index) {
-        if (index && item.type === 'text' && tokens[index - 1].type === 'thingtag_open') {
-          return true;
-        }
-      });
+      var things;
+      things = get_parsed_thingtags(md, $('.review-content').text());
       if (!things.length) {
         return;
       }
@@ -138,7 +135,7 @@
 
   })();
 
-  ThingManager = (function() {
+  window.ThingManager = (function() {
     function ThingManager(information) {
       this.things = {};
       this.thing_tree = $('.thing-tree');
@@ -286,10 +283,5 @@
     return ThingManager;
 
   })();
-
-  $(document).ready(function() {
-    window.thing_search = new ThingSearch;
-    return window.thing_manager = new ThingManager(window.ENTRY_INFORMATION);
-  });
 
 }).call(this);

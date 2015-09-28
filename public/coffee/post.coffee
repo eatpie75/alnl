@@ -1,4 +1,4 @@
-class Post
+class window.Post
   constructor: ()->
     @input_timeout = null
     @previous_value = ''
@@ -107,8 +107,3 @@ class Post
         @photo_list.children("[data-id=#{id}]").first().remove()
     })
     return
-
-
-$(document).ready(->
-  window.post = new Post
-)

@@ -1,4 +1,6 @@
-class ThingSearch
+get_parsed_thingtags = require('./utils').get_parsed_thingtags
+
+class window.ThingSearch
   constructor: ()->
     @input_timeout = null
     @previous_value = ''
@@ -30,7 +32,6 @@ class ThingSearch
       $.ajax({
         url: "/api/review/#{window.ENTRY_ID}"
         method: 'POST'
-        # headers:{'X-CSRFToken':window.CSRF_TOKEN}
         data: {'selections': window.thing_manager.toJSON()}
         dataType: 'json'
         success: (data)->
@@ -38,13 +39,8 @@ class ThingSearch
       })
     )
     @fill_probable_things()
-
   fill_probable_things: ()->
-    tokens = md.parseInline($('.review-content').text())[0].children
-    things = tokens.filter((item, index)->
-      if index and item.type == 'text' and tokens[index - 1].type == 'thingtag_open' then return true
-    )
-
+    things = get_parsed_thingtags(md, $('.review-content').text())
     if (!things.length) then return
     $.ajax({
       'url': '/api/thing/search'
@@ -105,7 +101,7 @@ class ThingSearch
     return
 
 
-class ThingManager
+class window.ThingManager
   constructor: (information)->
     @things = {}
 
@@ -194,9 +190,3 @@ class ThingManager
       for selection in thing.selections
         @add_selection(thing.id, selection)
     return @
-
-
-$(document).ready(->
-  window.thing_search = new ThingSearch
-  window.thing_manager = new ThingManager(window.ENTRY_INFORMATION)
-)

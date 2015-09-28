@@ -1,15 +1,15 @@
 {% extends 'base.swig' %}
 
 {% block post_scripts %}
-    {% if debug %}
-    <script src="/js/review.js"></script>
-    {% endif %}
     <script type="text/javascript">
-      // var CSRF_TOKEN="{{csrf_token}}";
       var ENTRY_ID={{entry.id}};
       {%- if information %}
       var ENTRY_INFORMATION=JSON.parse("{{information|json|addslashes|safe}}");
       {%- endif %}
+      $(document).ready(function() {
+        window.thing_search = new ThingSearch;
+        window.thing_manager = new ThingManager(window.ENTRY_INFORMATION);
+      });
     </script>
 {% endblock %}
 

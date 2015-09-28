@@ -30,8 +30,7 @@
     <script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="/lib/hogan/web/builds/3.0.2/hogan-3.0.2.min.js"></script>
     <script src="/lib/markdown-it/dist/markdown-it.min.js"></script>
-    <script src="/js/thingtag.js"></script>
-    <script src="/js/core.js"></script>
+    <script src="/dist/main.js"></script>
     {%- else %}
     <script src="/libs.js"></script>
     <script src="/main.js"></script>

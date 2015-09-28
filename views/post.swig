@@ -1,13 +1,13 @@
 {% extends 'base.swig' %}
 
 {% block post_scripts %}
-    {% if debug %}
-    <script src="/js/post.js"></script>
-    {% endif %}
     <script type="text/javascript">
       {%- if entry %}
       var ENTRY_ID={{entry.id}};
       {% endif %}
+      $(document).ready(function() {
+        window.post = new Post;
+      });
     </script>
 {% endblock %}
 

@@ -1,7 +1,5 @@
 (function() {
-  var Post;
-
-  Post = (function() {
+  window.Post = (function() {
     function Post() {
       this.input_timeout = null;
       this.previous_value = '';
@@ -138,9 +136,5 @@
     return Post;
 
   })();
-
-  $(document).ready(function() {
-    return window.post = new Post;
-  });
 
 }).call(this);
