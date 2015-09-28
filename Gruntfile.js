@@ -44,7 +44,7 @@ module.exports = function (grunt) {
         ],
         dest: '<%= config.dist %>/libs.js'
       },
-      less: {
+      css: {
         src: [
           '<%= config.lib %>/bootstrap/dist/css/bootstrap.css',
           '<%= config.css %>/app.css'
@@ -68,7 +68,7 @@ module.exports = function (grunt) {
       },
       less: {
         files: ['<%= config.less %>/app/*.less'],
-        tasks: ['less', 'concat:less']
+        tasks: ['less', 'concat:css']
       }
     },
 
