@@ -85,7 +85,7 @@ Thing = sequelize.define('Thing', {
   'hooks': {
     'beforeCreate': function(instance) {
       if (instance.slug === null) {
-        instance.slug = slug(instance.name);
+        instance.slug = slug(instance.name, {'lower': true});
       }
     }
   },
