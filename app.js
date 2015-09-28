@@ -19,6 +19,7 @@ app.set('view engine', 'swig');
 swig.setDefaults({
   'locals': {
     'debug': debug,
+    'debug_less': !!process.env.DEBUG_LESS,
     'title': 'ALNL'
   },
   'cache': debug ? false : 'memory'

@@ -11,10 +11,13 @@
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     {%- block css %}
-    {%- if debug %}
+    {%- if debug and debug_less %}
     <link href="/lib/bootstrap/less/bootstrap.less" rel="stylesheet/less" type="text/css">
     <link href="/less/app/main.less" rel="stylesheet/less" type="text/css">
     <script src="/lib/less/dist/less.min.js"></script>
+    {%- elif debug %}
+    <link href="/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" type="text/css">
+    <link href="/css/app.css" rel="stylesheet" type="text/css">
     {%- else %}
     <link href="/main.css" rel="stylesheet" type="text/css">
     {%- endif %}
