@@ -38,8 +38,6 @@
     {%- endif %}
     <script type="text/javascript">
       var AJAX_BASE="{{AJAX_BASE}}";
-      var md=markdownit('commonmark', {'typographer':true});
-      md.use(window.markdownitThingtag);
     </script>
     {%- block post_scripts %}{% endblock %}
     {%- endblock %}

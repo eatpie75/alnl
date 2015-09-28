@@ -36,7 +36,7 @@
     state.pos = start + 1;
     token = state.push('thingtag_open', 'a', 1);
     token.attrs = [['href', '/thing/' + content], ['class', 'thing']];
-    token = state.push('thingtag_text', '', 0);
+    token = state.push('text', '', 0);
     token.content = content;
     token = state.push('thingtag_close', 'a', -1);
     state.pos = state.posMax;
@@ -44,7 +44,7 @@
     return true;
   };
 
-  window.markdownitThingtag = function(md) {
+  module.exports = function(md) {
     return md.inline.ruler.push('thingtag', thingtag);
   };
 

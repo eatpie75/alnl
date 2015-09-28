@@ -53,19 +53,20 @@
     ThingSearch.prototype.fill_probable_things = function() {
       var things, tokens;
       tokens = md.parseInline($('.review-content').text())[0].children;
-      things = tokens.reduce(function(result, item) {
-        if (item.type !== 'thingtag_text') {
-          return result;
+      things = tokens.filter(function(item, index) {
+        if (index && item.type === 'text' && tokens[index - 1].type === 'thingtag_open') {
+          return true;
         }
-        return result.concat([item.content]);
-      }, []);
+      });
       if (!things.length) {
         return;
       }
       return $.ajax({
         'url': '/api/thing/search',
         'data': {
-          'names': things
+          'names': things.map(function(thing) {
+            return thing.content;
+          })
         },
         'dataType': 'json',
         success: this.render_suggestions.bind(this)

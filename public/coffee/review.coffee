@@ -41,15 +41,14 @@ class ThingSearch
 
   fill_probable_things: ()->
     tokens = md.parseInline($('.review-content').text())[0].children
-    things = tokens.reduce((result, item)->
-      if item.type != 'thingtag_text' then return result
-      return result.concat([item.content])
-    , [])
+    things = tokens.filter((item, index)->
+      if index and item.type == 'text' and tokens[index - 1].type == 'thingtag_open' then return true
+    )
 
     if (!things.length) then return
     $.ajax({
       'url': '/api/thing/search'
-      'data': {'names': things}
+      'data': {'names': things.map((thing)->thing.content)}
       'dataType': 'json'
       success: @render_suggestions.bind(@)
     })

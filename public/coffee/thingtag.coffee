@@ -25,7 +25,7 @@ thingtag = (state, silent)->
   token = state.push('thingtag_open', 'a', 1)
   token.attrs = [['href', '/thing/' + content], ['class', 'thing']]
 
-  token = state.push('thingtag_text', '', 0)
+  token = state.push('text', '', 0)
   token.content = content
 
   token = state.push('thingtag_close', 'a', -1)
@@ -34,5 +34,4 @@ thingtag = (state, silent)->
   state.posMax = max
   return true
 
-window.markdownitThingtag = (md)->
-  md.inline.ruler.push('thingtag', thingtag)
+module.exports = (md)-> md.inline.ruler.push('thingtag', thingtag)

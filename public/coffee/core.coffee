@@ -1,4 +1,7 @@
 $(document).ready(->
+  window.md = markdownit('commonmark', {'typographer': true})
+  md.use(require('./thingtag'))
+
   default_renderer = md.renderer.rules.image
   md.renderer.rules.image = (tokens, idx, options, env, self)->
     tokens[idx].attrs[2] = ['class', 'thumbnail center-block']
