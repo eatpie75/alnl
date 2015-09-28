@@ -13,8 +13,8 @@
     {%- block css %}
     {%- if debug %}
     <link href="/less/bootstrap/bootstrap.less" rel="stylesheet/less" type="text/css">
-    <link href="/less/main.less" rel="stylesheet/less" type="text/css">
-    <script src="/js/less.min.js"></script>
+    <link href="/less/app/main.less" rel="stylesheet/less" type="text/css">
+    <script src="/lib/less/dist/less.min.js"></script>
     {%- else %}
     <link href="/main.css" rel="stylesheet" type="text/css">
     {%- endif %}
@@ -23,14 +23,16 @@
     {%- block scripts %}
     {%- block pre_scripts %}{% endblock %}
     {%- if debug %}
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/markdown-it.min.js"></script>
+    <script src="/lib/jquery/dist/jquery.min.js"></script>
+    <script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="/lib/hogan/web/builds/3.0.2/hogan-3.0.2.min.js"></script>
+    <script src="/lib/markdown-it/dist/markdown-it.min.js"></script>
+    <script src="/js/markdown-it-thingtag.js"></script>
+    <script src="/js/core.js"></script>
     {%- else %}
     <script src="/libs.js"></script>
+    <script src="/main.js"></script>
     {%- endif %}
-    <script src="/markdown-it-thingtag.js"></script>
-    <script src="/core.js"></script>
     <script type="text/javascript">
       var AJAX_BASE="{{AJAX_BASE}}";
       var md=markdownit('commonmark', {'typographer':true});

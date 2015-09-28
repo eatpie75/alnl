@@ -1,7 +1,9 @@
 {% extends 'base.swig' %}
 
 {% block post_scripts %}
-    <script src="/review.js"></script>
+    {% if debug %}
+    <script src="/js/review.js"></script>
+    {% endif %}
     <script type="text/javascript">
       // var CSRF_TOKEN="{{csrf_token}}";
       var ENTRY_ID={{entry.id}};

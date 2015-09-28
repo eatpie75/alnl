@@ -11,20 +11,17 @@ var api = require('./routes/api');
 
 var app = express();
 
-var STATIC_PATH = path.join(__dirname, 'public');
-if (app.get('env') === 'production') {
-    STATIC_PATH = path.join(STATIC_PATH, 'dist');
-}
+var debug = (app.get('env') !== 'production');
 
 app.engine('swig', swig.renderFile);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'swig');
 swig.setDefaults({
   'locals': {
-    'debug': false, //(app.get('env') === 'development'),
+    'debug': debug,
     'title': 'ALNL'
   },
-  'cache': (app.get('env') === 'development') ? false : 'memory'
+  'cache': debug ? false : 'memory'
 });
 
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -32,7 +29,13 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(process.env.STATIC_PATH || STATIC_PATH));
+
+if (debug) {
+  app.use('/lib', express.static(path.join(__dirname, 'lib')));
+  app.use(express.static(path.join(__dirname, 'public')));
+} else {
+  app.use(express.static(process.env.STATIC_PATH || path.join(__dirname, 'public', 'dist')));
+}
 
 app.use('/', routes);
 app.use('/api', api);
