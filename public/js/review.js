@@ -54,7 +54,7 @@
       var things, tokens;
       tokens = md.parseInline($('.review-content').text())[0].children;
       things = tokens.reduce(function(result, item) {
-        if (item.type !== 'hashtag_text') {
+        if (item.type !== 'thingtag_text') {
           return result;
         }
         return result.concat([item.content]);

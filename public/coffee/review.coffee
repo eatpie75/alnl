@@ -42,7 +42,7 @@ class ThingSearch
   fill_probable_things: ()->
     tokens = md.parseInline($('.review-content').text())[0].children
     things = tokens.reduce((result, item)->
-      if item.type != 'hashtag_text' then return result
+      if item.type != 'thingtag_text' then return result
       return result.concat([item.content])
     , [])
 

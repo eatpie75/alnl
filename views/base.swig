@@ -30,7 +30,7 @@
     <script src="/lib/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="/lib/hogan/web/builds/3.0.2/hogan-3.0.2.min.js"></script>
     <script src="/lib/markdown-it/dist/markdown-it.min.js"></script>
-    <script src="/js/markdown-it-thingtag.js"></script>
+    <script src="/js/thingtag.js"></script>
     <script src="/js/core.js"></script>
     {%- else %}
     <script src="/libs.js"></script>
@@ -39,7 +39,7 @@
     <script type="text/javascript">
       var AJAX_BASE="{{AJAX_BASE}}";
       var md=markdownit('commonmark', {'typographer':true});
-      md.use(window.markdownitHashtag);
+      md.use(window.markdownitThingtag);
     </script>
     {%- block post_scripts %}{% endblock %}
     {%- endblock %}
