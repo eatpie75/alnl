@@ -1,5 +1,4 @@
 var busboy = require('connect-busboy');
-var fuzzy_selection_update = require('../utils/fuzzy_selection_update');
 var get_gcloud = require('../utils/get_gcloud');
 var path = require('path');
 var express = require('express');
