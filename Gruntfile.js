@@ -8,10 +8,11 @@ module.exports = function (grunt) {
   });
 
   var config = {
+    lib: 'lib',
     coffee: 'public/coffee',
     js: 'public/js',
-    lib: 'lib',
     less: 'public/less',
+    css: 'public/css',
     dist: 'public/dist'
   };
 
@@ -19,10 +20,8 @@ module.exports = function (grunt) {
     config: config,
 
     clean: {
-      css: ['<%= config.dist %>/*.css'],
-      js: ['<%= config.dist %>/*.js'],
-      fonts: ['<%= config.dist %>/fonts']
-      // less: ['<%= config.dist %>/*.less'],
+      prod: ['<%= config.dist %>/**/*'],
+      css: ['<%= config.css %>/*.css']
     },
 
     copy: {
@@ -47,8 +46,8 @@ module.exports = function (grunt) {
       },
       less: {
         src: [
-          '<%= config.lib %>/bootstrap/dist/css/bootstrap.min.css',
-          '<%= config.dist %>/app.css'
+          '<%= config.lib %>/bootstrap/dist/css/bootstrap.css',
+          '<%= config.css %>/app.css'
         ],
         dest: '<%= config.dist %>/main.css'
       }
@@ -136,7 +135,7 @@ module.exports = function (grunt) {
     less: {
       dev: {
         files: {
-          '<%= config.dist %>/app.css': [
+          '<%= config.css %>/app.css': [
             '<%= config.less %>/app/*.less'
           ]
         }

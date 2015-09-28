@@ -12,7 +12,7 @@
     <![endif]-->
     {%- block css %}
     {%- if debug %}
-    <link href="/less/bootstrap/bootstrap.less" rel="stylesheet/less" type="text/css">
+    <link href="/lib/bootstrap/less/bootstrap.less" rel="stylesheet/less" type="text/css">
     <link href="/less/app/main.less" rel="stylesheet/less" type="text/css">
     <script src="/lib/less/dist/less.min.js"></script>
     {%- else %}
