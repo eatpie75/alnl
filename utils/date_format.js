@@ -4,9 +4,9 @@ var zero_pad = function(input) {
 
 var date_only = function(date) {
   if (!(date instanceof Date)) date = new Date(date);
-  var year = date.getFullYear();
-  var month = zero_pad(date.getMonth());
-  var day = zero_pad(date.getDate());
+  var year = date.getUTCFullYear();
+  var month = zero_pad(date.getUTCMonth() + 1);
+  var day = zero_pad(date.getUTCDate());
 
   return [year, month, day].join('-');
 };
