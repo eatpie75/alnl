@@ -1,6 +1,6 @@
 var Sequelize = require('sequelize');
 var slug = require('slug');
-var date_format = require('../utils/date_format');
+var date_format = require('../../utils/date_format');
 var fuzzy_selection_update = require('../utils/fuzzy_selection_update');
 
 var sequelize = new Sequelize(process.env.DATABASE_URL || 'sqlite://db.sqlite3', {'logging': null});

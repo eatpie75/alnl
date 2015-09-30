@@ -5,11 +5,10 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var api = require('./routes/api');
-
 var app = express();
 
-var debug = (app.get('env') !== 'production');
+var DEBUG = (app.get('env') !== 'production');
+var BASE_DIR = path.join(__dirname, '..');
 
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
@@ -17,17 +16,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-if (debug) {
-  app.use('/lib', express.static(path.join(__dirname, 'lib')));
-  app.use(express.static(path.join(__dirname, 'public')));
+if (DEBUG) {
+  app.use('/lib', express.static(path.join(BASE_DIR, 'lib')));
+  app.use(express.static(path.join(BASE_DIR, 'public')));
 } else {
-  app.use(express.static(process.env.STATIC_PATH || path.join(__dirname, 'public', 'dist')));
+  app.use(express.static(process.env.STATIC_PATH || path.join(BASE_DIR, 'public', 'dist')));
 }
 
-app.use('/api', api);
+app.use('/api', require('./routes/api'));
 
 app.use('/', function(req, res) {
-  res.sendFile(path.join(__dirname, 'client/index.html'));
+  res.sendFile(path.join(BASE_DIR, 'client/index.html'));
 });
 
 
@@ -43,7 +42,7 @@ app.use(function(err, req, res) {
   res.status(err.status || 500);
   res.render('error', {
     message: err.message,
-    error: (debug) ? err : {}
+    error: (DEBUG) ? err : {}
   });
 });
 

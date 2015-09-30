@@ -53,7 +53,7 @@ module.exports = function (grunt) {
 
     watch: {
       server: {
-        files: ['**/*.js', '!public/**/*', '!node_modules/**/*', '!client/**/*', '!Gruntfile.js'],
+        files: ['<%= config.server %>', '!public/**/*', '!node_modules/**/*', '!<%= config.client %>/**/*', '!Gruntfile.js'],
         tasks: ['jshint:server']
       },
       client: {
@@ -77,7 +77,7 @@ module.exports = function (grunt) {
         ]
       },
       server: {
-        src: ['**/*.js', '!public/**/*', '!node_modules/**/*', '!client/**/*', '!Gruntfile.js']
+        src: ['<%= config.server %>/**/*.js', '!public/**/*', '!node_modules/**/*', '!<%= config.client %>/**/*', '!Gruntfile.js']
       },
       client: {
         src: ['<%= config.client %>/**/*.js']
