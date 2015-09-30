@@ -1,6 +1,6 @@
 var Sequelize = require('sequelize');
 var slug = require('slug');
-var swig_date = require('swig/lib/filters').date;
+var date_format = require('../utils/date_format');
 var fuzzy_selection_update = require('../utils/fuzzy_selection_update');
 
 var sequelize = new Sequelize(process.env.DATABASE_URL || 'sqlite://db.sqlite3', {'logging': null});
@@ -10,12 +10,12 @@ var Entry, Thing, Information, Photo;
 Entry = sequelize.define('Entry', {
   'date': {
     'type': Sequelize.DATEONLY,
+    'unique': true,
     'defaultValue': function() {
-      return swig_date(new Date(), 'Y-m-d');
+      return date_format.date_only(new Date());
     },
     'set': function(date) {
-      if (!(date instanceof Date)) date = new Date(date);
-      this.setDataValue('date', swig_date(date, 'Y-m-d'));
+      this.setDataValue('date', date_format.date_only(date));
     }
   },
   'content': {
@@ -75,6 +75,7 @@ Entry = sequelize.define('Entry', {
     }
   }
 });
+Entry.DATE_REGEX = /^(\d{4})-(\d{2})-(\d{2})$/;
 
 Thing = sequelize.define('Thing', {
   'date_created': {type: Sequelize.DATE, defaultValue: Sequelize.NOW},
@@ -104,7 +105,12 @@ Thing = sequelize.define('Thing', {
 });
 
 Information = sequelize.define('Information', {
-  'date': Sequelize.DATEONLY,
+  'date': {
+    'type': Sequelize.DATEONLY,
+    'set': function(date) {
+      this.setDataValue('date', date_format.date_only(date));
+    }
+  },
   'kind': Sequelize.INTEGER,
   'data': {type: Sequelize.TEXT, defaultValue: '{}'}
 }, {

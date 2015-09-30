@@ -9,8 +9,8 @@ module.exports = function (grunt) {
 
   var config = {
     lib: 'lib',
-    coffee: 'public/coffee',
-    js: 'public/js',
+    client: 'client',
+    server: 'server',
     less: 'public/less',
     css: 'public/css',
     dist: 'public/dist'
@@ -38,8 +38,6 @@ module.exports = function (grunt) {
       js: {
         src: [
           '<%= config.lib %>/jquery/dist/jquery.min.js',
-          '<%= config.lib %>/hogan/web/builds/3.0.2/hogan-3.0.2.min.js',
-          '<%= config.lib %>/markdown-it/dist/markdown-it.min.js',
           '<%= config.lib %>/bootstrap/dist/js/bootstrap.min.js'
         ],
         dest: '<%= config.dist %>/libs.js'
@@ -55,16 +53,12 @@ module.exports = function (grunt) {
 
     watch: {
       server: {
-        files: ['**/*.js', '!public/**/*.js', '!node_modules/**/*.js'],
+        files: ['**/*.js', '!public/**/*', '!node_modules/**/*', '!client/**/*', '!Gruntfile.js'],
         tasks: ['jshint:server']
       },
-      coffee: {
-        files: ['<%= config.coffee %>/*.coffee'],
-        tasks: ['coffee:dev']
-      },
       client: {
-        files: ['<%= config.js %>/*.js'],
-        tasks: [/*'jshint:client',*/ 'browserify:prod', 'uglify:dev']
+        files: ['<%= config.client %>/**/*.js'],
+        tasks: ['jshint:client', 'browserify:prod']
       },
       less: {
         files: ['<%= config.less %>/app/*.less'],
@@ -77,16 +71,16 @@ module.exports = function (grunt) {
         force: 'true',
         jshintrc: '.jshintrc',
         ignores: [
-          '<%= config.dist %>/**/*.js',
-          '<%= config.lib %>/**/*.js',
-          'node_modules/**/*.js'
+          '<%= config.dist %>/**/*',
+          '<%= config.lib %>/**/*',
+          'node_modules/**/*'
         ]
       },
       server: {
-        src: ['**/*.js', '!public/**/*.js', '!node_modules/**/*.js']
+        src: ['**/*.js', '!public/**/*', '!node_modules/**/*', '!client/**/*', '!Gruntfile.js']
       },
       client: {
-        src: ['<%= config.js %>/*.js', '!<%= config.js %>/markdown-it-thingtag.js', '!<%= config.lib %>/**/*.js', '!<%= config.dist %>/*.js']
+        src: ['<%= config.client %>/**/*.js']
       }
     },
 
@@ -118,18 +112,6 @@ module.exports = function (grunt) {
       }
     },
 
-    coffee: {
-      dev: {
-        files: [{
-          expand: true,
-          cwd: '<%= config.coffee %>',
-          src: '*.coffee',
-          dest: '<%= config.js %>',
-          ext: '.js'
-        }]
-      }
-    },
-
     less: {
       dev: {
         files: {
@@ -143,7 +125,7 @@ module.exports = function (grunt) {
     browserify: {
       prod: {
         files: {
-          '<%= config.dist %>/main.js': ['<%= config.js %>/*.js']
+          '<%= config.dist %>/main.js': ['<%= config.client %>/app.js']
         }
       }
     }
@@ -163,9 +145,8 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean',
-    'coffee',
     // 'jshint',
-    'mochaTest',
+    // 'mochaTest',
     'less',
     'concat',
     'copy',

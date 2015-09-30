@@ -1,6 +1,6 @@
 var expect = require('chai').expect;
-var markdownit = require('../lib/markdown-it/dist/markdown-it');
-var thingtag = require('../public/js/thingtag');
+var markdownit = require('markdown-it');
+var thingtag = require('../client/thingtag');
 
 var md = markdownit('commonmark', {'typographer': true});
 md.use(thingtag);
