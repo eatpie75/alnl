@@ -27,8 +27,13 @@ var get = function(id) {
   return db.models.Thing.findOne(get_where(id));
 };
 
+var get_by_fragment = function(fragment) {
+  return db.models.Thing.findAll({'where': {'name': {'$like': fragment}}});
+};
+
 module.exports = {
   '_get_id': get_id,
   'all': all,
-  'get': get
+  'get': get,
+  'get_by_fragment': get_by_fragment
 };

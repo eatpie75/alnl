@@ -2,6 +2,10 @@ var Promise = require('bluebird');
 var _ = require('lodash');
 var db = require('..');
 
+var create = function(data) {
+  return db.models.Entry.create(data);
+};
+
 var get_where = function(id) {
   if (typeof id === 'string' && db.models.Entry.DATE_REGEX.test(id)) {
     return {'where': {'date': id}};
@@ -71,6 +75,7 @@ var photos = function(id) {
 };
 
 module.exports = {
+  'create': create,
   '_get_id': get_id,
   'get_by_id': get_by_id,
   'get_last_25': get_last_25,
