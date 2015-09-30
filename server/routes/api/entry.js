@@ -39,7 +39,6 @@ entry_router.put('/', function(req, res) {
 
 entry_router.post('/review', function(req, res) {
   api.entry.get_by_id(res.locals.id).then(function(entry) {
-    console.log(req.body);
     var metadata = entry.get_metadata();
     metadata.information = req.body;
     entry.metadata = JSON.stringify(metadata);
