@@ -62,7 +62,7 @@ Entry = sequelize.define('Entry', {
               'content': _this.content.slice(selection[0], selection[1]),
               'date': _this.date
             };
-            new_information.push({'name': _this.date, 'data': JSON.stringify(data), 'ThingId': information.id, 'EntryId': _this.id});
+            new_information.push({'date': _this.date, 'data': JSON.stringify(data), 'ThingId': information.id, 'EntryId': _this.id});
           });
         });
       }
