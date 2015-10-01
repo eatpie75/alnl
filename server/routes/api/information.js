@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var api = require('../../models/api');
+var api = require('../../db/api');
 
 router.get('/', function(req, res) {
   api.information.all().then(res.json.bind(res));

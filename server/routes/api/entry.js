@@ -1,7 +1,7 @@
 var _ = require('lodash');
 var express = require('express');
 
-var api = require('../../models/api');
+var api = require('../../db/api');
 
 var base_router = express.Router();
 var entry_router = express.Router();

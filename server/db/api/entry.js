@@ -1,6 +1,6 @@
 var Promise = require('bluebird');
 var _ = require('lodash');
-var db = require('..');
+var db = require('../models');
 
 var create = function(data) {
   return db.models.Entry.create(data);

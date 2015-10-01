@@ -1,5 +1,5 @@
 var Promise = require('bluebird');
-var db = require('..');
+var db = require('../models');
 
 var get_where = function(id) {
   if (isFinite(id)) {

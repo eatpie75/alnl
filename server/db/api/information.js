@@ -1,4 +1,4 @@
-var db = require('..');
+var db = require('../models');
 var get_id = require('./thing')._get_id;
 
 var all = function() {
